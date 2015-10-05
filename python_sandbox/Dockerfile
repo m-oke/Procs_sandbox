@@ -10,6 +10,4 @@ RUN echo '#!/bin/bash' >> $START
 RUN echo TIMEFORMAT=$\'%3U\\\\n%3S\' >> $START
 RUN echo 'time (/usr/bin/time -f %M python3 $EXE < $WORK/input$NUM > $WORK/result$NUM) 2> $WORK/spec$NUM' >> $START
 RUN chmod +x $START
-#CMD bash
-#ENTRYPOINT cat $START
 ENTRYPOINT $START
