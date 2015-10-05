@@ -6,10 +6,10 @@ USER test_user
 WORKDIR /home/test_user/work
 ENV START /home/test_user/exec.sh
 ENV WORK /home/test_user/work
-RUN echo $START
-RUN echo 'ts=$(date +%s%N)' > $START
-RUN echo '(/usr/bin/time -f '%M' python3 $EXE < $WORK/input$NUM > $WORK/result$NUM) 2> $WORK/spec$NUM' >> $START
-RUN echo 'tt=$((($(date +%s%N) - $ts)/1000000))' >> $START
-RUN echo 'echo $tt >> $WORK/spec$NUM' >> $START
+RUN echo '#!/bin/bash' >> $START
+RUN echo TIMEFORMAT=$\'%3U\\\\n%3S\' >> $START
+RUN echo 'time (/usr/bin/time -f %M python3 $EXE < $WORK/input$NUM > $WORK/result$NUM) 2> $WORK/spec$NUM' >> $START
 RUN chmod +x $START
+#CMD bash
+#ENTRYPOINT cat $START
 ENTRYPOINT $START
