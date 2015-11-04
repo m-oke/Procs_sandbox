@@ -1,11 +1,11 @@
 FROM ubuntu:14.04
 MAINTAINER errorcode "errorcode.sc2@gmail.com"
 RUN apt-get update && apt-get install -y g++ time
-RUN useradd -ms /bin/bash test_user
-USER test_user
-WORKDIR /home/test_user/work
-ENV START /home/test_user/exec.sh
-ENV WORK /home/test_user/work
+RUN useradd -m -s /bin/rbash cpp_user
+USER cpp_user
+WORKDIR /home/cpp_user/work
+ENV START /home/cpp_user/exec.sh
+ENV WORK /home/cpp_user/work
 RUN echo '#!/bin/bash' >> $START
 RUN echo TIMEFORMAT=$\'%3U\\\\n%3S\' >> $START
 RUN echo 'time (/usr/bin/time -f %M ./$EXE < $WORK/input$NUM > $WORK/result$NUM) 2> $WORK/spec$NUM' >> $START
