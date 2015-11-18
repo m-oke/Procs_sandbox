@@ -8,6 +8,6 @@ ENV START /home/python_user/exec.sh
 ENV WORK /home/python_user/work
 RUN echo '#!/bin/bash' >> $START
 RUN echo TIMEFORMAT=$\'%3U\\\\n%3S\' >> $START
-RUN echo 'time (/usr/bin/time -f %M python3 $EXE < $WORK/input$NUM > $WORK/result$NUM) 2> $WORK/spec$NUM' >> $START
+RUN echo 'time (/usr/bin/time -f %M python3 $EXE < $WORK/$INPUT > $WORK/result$NUM) 2> $WORK/spec$NUM' >> $START
 RUN chmod +x $START
 ENTRYPOINT $START
