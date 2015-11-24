@@ -1,10 +1,10 @@
 FROM ubuntu:14.04
 MAINTAINER errorcode "errorcode.sc2@gmail.com"
 RUN apt-get update && apt-get install -y g++ time
-RUN useradd -m -s /bin/rbash cpp_user
+RUN useradd -m -s /bin/bash exec_user -u 10000
 
-RUN mkdir /home/cpp_user/bin
-RUN echo 'PATH=/home/cpp_user/bin' >> /home/cpp_user/.bashrc
+RUN mkdir /home/exec_user/bin
+RUN echo 'PATH=/home/exec_user/bin' >> /home/exec_user/.bashrc
 RUN chmod o-w /etc
 RUN chmod o-x /bin/*
 RUN chmod o-x /usr/bin/*
@@ -12,15 +12,19 @@ RUN chmod o+x /usr/bin/time
 RUN chmod o+x /usr/bin/groups
 RUN chmod o+x /bin/bash
 
-ENV START /home/cpp_user/exec.sh
+ENV START /home/exec_user/exec.sh
+ENV START /home/exec_user/exec.sh
+ENV WORK /home/exec_user/work
+
 RUN echo '#!/bin/bash' >> $START
 RUN chmod 777 $START
-RUN chown cpp_user:cpp_user $START
+RUN chown exec_user:exec_user $START
 
-USER cpp_user
-WORKDIR /home/cpp_user/work
-ENV START /home/cpp_user/exec.sh
-ENV WORK /home/cpp_user/work
+RUN mkdir /home/exec_user/work
+RUN chmod o+w /home/exec_user/work
+
+USER exec_user
+WORKDIR /home/exec_user/work
 
 # Disable builtin commands
 RUN echo 'enable -n alias' >> $START
@@ -69,10 +73,10 @@ RUN echo 'enable -n unset' >> $START
 RUN echo 'enable -n wait' >> $START
 RUN echo 'enable -n enable' >> $START
 
-USER cpp_user
-WORKDIR /home/cpp_user/work
-ENV START /home/cpp_user/exec.sh
-ENV WORK /home/cpp_user/work
+USER exec_user
+WORKDIR /home/exec_user/work
+ENV START /home/exec_user/exec.sh
+ENV WORK /home/exec_user/work
 RUN echo TIMEFORMAT=$\'%3U\\\\n%3S\' >> $START
 RUN echo 'time (/usr/bin/time -f %M ./$EXE < $WORK/$INPUT > $WORK/result$NUM) 2> $WORK/spec$NUM' >> $START
 

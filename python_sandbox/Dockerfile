@@ -1,10 +1,11 @@
 FROM ubuntu:14.04
 MAINTAINER errorcode "errorcode.sc2@gmail.com"
 RUN apt-get update && apt-get install -y python3 time
-RUN useradd -m -s /bin/bash python_user
-RUN mkdir /home/python_user/bin
-RUN ln -s /usr/bin/python3 /home/python_user/bin/python3
-RUN echo 'PATH=/home/python_user/bin' >> /home/python_user/.bashrc
+RUN useradd -m -s /bin/bash exec_user -u 10000
+
+RUN mkdir /home/exec_user/bin
+RUN ln -s /usr/bin/python3 /home/exec_user/bin/python3
+RUN echo 'PATH=/home/exec_user/bin' >> /home/exec_user/.bashrc
 RUN chmod o-w /etc
 RUN chmod o-x /bin/*
 RUN chmod o-x /usr/bin/*
@@ -13,15 +14,19 @@ RUN chmod o+x /usr/bin/groups
 RUN chmod o+x /usr/bin/python3
 RUN chmod o+x /bin/bash
 
-ENV START /home/python_user/exec.sh
+ENV START /home/exec_user/exec.sh
+ENV WORK /home/exec_user/work
+ENV START /home/exec_user/exec.sh
+
 RUN echo '#!/bin/bash' >> $START
 RUN chmod 777 $START
-RUN chown python_user:python_user $START
+RUN chown exec_user:exec_user $START
 
-USER python_user
-WORKDIR /home/python_user/work
-ENV START /home/python_user/exec.sh
-ENV WORK /home/python_user/work
+RUN mkdir /home/exec_user/work
+RUN chmod 777 /home/exec_user/work
+
+USER exec_user
+WORKDIR /home/exec_user/work
 
 # Disable builtin commands
 RUN echo 'enable -n alias' >> $START
