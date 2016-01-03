@@ -1,7 +1,8 @@
 FROM ubuntu:14.04
 MAINTAINER errorcode "errorcode.sc2@gmail.com"
 RUN apt-get update && apt-get install -y g++ time
-RUN useradd -m -s /bin/bash exec_user -u 10000
+RUN groupadd exec_user
+RUN useradd -m -s /bin/bash exec_user -u 10000 -g exec_user
 
 RUN mkdir /home/exec_user/bin
 RUN echo 'PATH=/home/exec_user/bin' >> /home/exec_user/.bashrc
@@ -21,7 +22,7 @@ RUN chmod 777 $START
 RUN chown exec_user:exec_user $START
 
 RUN mkdir /home/exec_user/work
-RUN chmod o+w /home/exec_user/work
+RUN chmod 777 /home/exec_user/work
 
 USER exec_user
 WORKDIR /home/exec_user/work
