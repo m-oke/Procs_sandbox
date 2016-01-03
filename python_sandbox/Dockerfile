@@ -1,5 +1,6 @@
 FROM ubuntu:14.04
 MAINTAINER errorcode "errorcode.sc2@gmail.com"
+RUN apt-get update && apt-get install -y python3 time
 RUN groupadd exec_user
 RUN useradd -m -s /bin/bash exec_user -u 10000 -g exec_user
 
