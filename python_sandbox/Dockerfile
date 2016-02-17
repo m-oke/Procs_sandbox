@@ -20,11 +20,11 @@ ENV WORK /home/exec_user/work
 ENV START /home/exec_user/exec.sh
 
 RUN echo '#!/bin/bash' >> $START
-RUN chmod 777 $START
+RUN chmod 770 $START
 RUN chown exec_user:exec_user $START
 
 RUN mkdir /home/exec_user/work
-RUN chmod 777 /home/exec_user/work
+RUN chmod 770 /home/exec_user/work
 
 USER exec_user
 WORKDIR /home/exec_user/work
